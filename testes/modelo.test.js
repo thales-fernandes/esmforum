@@ -23,3 +23,30 @@ test('Testando cadastro de três perguntas', () => {
   expect(perguntas[2].num_respostas).toBe(0);
   expect(perguntas[1].id_pergunta).toBe(perguntas[2].id_pergunta-1);
 });
+
+test('Testando cadastro de pergunta e verificando ID retornado', () => {
+  const id = modelo.cadastrar_pergunta('Qual a capital da França?');
+  expect(id).toBeGreaterThan(0);
+});
+
+test('Testando cadastro de resposta e verificando ID retornado', () => {
+  const id_pergunta = modelo.cadastrar_pergunta('Qual a capital da França?');
+  const id_resposta = modelo.cadastrar_resposta(id_pergunta, 'Paris');
+  expect(id_resposta).toBeGreaterThan(0);
+});
+
+test('Testando get_pergunta', () => {
+  const id = modelo.cadastrar_pergunta('Qual a capital da França?');
+  const pergunta = modelo.get_pergunta(id);
+  expect(pergunta.texto).toBe('Qual a capital da França?');
+  expect(pergunta.id_usuario).toBe(1);
+});
+
+test('Testando get_respostas', () => {
+  const id_pergunta = modelo.cadastrar_pergunta('Qual a capital da França?');
+  modelo.cadastrar_resposta(id_pergunta, 'Paris');
+  const respostas = modelo.get_respostas(id_pergunta);
+  expect(respostas.length).toBe(1);
+  expect(respostas[0].texto).toBe('Paris');
+});
+
